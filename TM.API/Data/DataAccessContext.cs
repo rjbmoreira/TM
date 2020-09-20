@@ -9,8 +9,9 @@ namespace TM.API.Data
 
         }
 
-        public DbSet<Customer> Customer {get;set;}
-        public DbSet<Project> Project {get;set;}
+        public DbSet<Customer> Customers {get;set;}
+        public DbSet<Project> Projects {get;set;}
+        public DbSet<TimeInput> TimeInputs {get;set;}
         
     }
 }
