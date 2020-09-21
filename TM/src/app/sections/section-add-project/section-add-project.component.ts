@@ -10,16 +10,18 @@ import { DBAccessService } from 'src/app/services/dbaccess.service';
 })
 export class SectionAddProjectComponent implements OnInit {
 
+  addButtonText: string = "Add";
+  showError:boolean = false;
+  showSuccess:boolean = false;
+  addProjectForm: FormGroup;
+  customers: Customer[] = [
+  ];
+  
   
   constructor(private dbaccess: DBAccessService,
     private formBuilder: FormBuilder
     ) { }
 
-    addProjectForm: FormGroup;
-    customers: Customer[] = [
-      //{ id:10, name: "customer 1", email: "c1@example.com", phone: "+351911111111" }
-    ];
-    
     getCustomers(): void {
       this.dbaccess.getCustomers()
         .subscribe(res => {
@@ -33,16 +35,38 @@ export class SectionAddProjectComponent implements OnInit {
 
     this.addProjectForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      customerSelect: ['', [Validators.required]],
+      customerId: [-1, [Validators.required]],
       description: ''
     })
+
+
+  }
+
+  addProject(addProjectFormValue): void {
+    
+    this.dbaccess.addProject(addProjectFormValue)
+      .subscribe(res => {
+        console.log('Result from addProject: ', res);
+        this.showError = false;
+        this.showSuccess = true;
+        this.addProjectForm.reset();
+        this.addButtonText = "Add";
+      }, (error) => {
+        console.log('debug: ', addProjectFormValue);
+        console.log("There was an error.");
+        this.showSuccess = false;
+        this.showError = true;
+        this.addButtonText = "Add";
+      });
+      
   }
 
   onSubmit(addProjectFormValue){
-
-    console.warn('Your form has been submitted', addProjectFormValue);
-    this.addProjectForm.reset();
-
+    this.showError = this.showSuccess = false;
+    this.addButtonText = "Processing";
+    this.addProject(addProjectFormValue);
+    //console.warn('Your form has been submitted', addCProjectFormValue);
+    
   }
 
 }

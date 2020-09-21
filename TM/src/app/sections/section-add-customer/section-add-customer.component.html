@@ -19,10 +19,10 @@
                 <input id="phone" type="text" formControlName="phone"/>
             </div>
         </div>
-        <div class="col-md-2">
-            <em id="errorMessage" style="color: red;" *ngIf="showError">There was an error adding the customer. Please try again.</em>
-            <em id="successMessage" style="color:olivedrab;" *ngIf="showSuccess">Customer added.</em>
-        </div>
         <button class="btn btn-info" type="submit" [disabled]="!addCustomerForm.valid">{{ addButtonText }}</button>
+        <div class="col-md-2">
+            <em id="errorMessage" style="color: red; font-weight: bold;" *ngIf="showError">There was an error adding the customer. Please try again.</em>
+            <em id="successMessage" style="color:olivedrab; font-weight: bold;" *ngIf="showSuccess">Customer added.</em>
+        </div>
     </form>
 </div>

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Customer } from '../models/customer';
+import { Project } from '../models/project';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,18 @@ export class DBAccessService {
 
   addCustomer(customer: Customer){
     return this.http.post("https://localhost:5001/tm.api/customer",customer).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getProjects(){
+    return this.http.get("https://localhost:5001/tm.api/project").pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addProject(project: Project){
+    return this.http.post("https://localhost:5001/tm.api/project",project).pipe(
       catchError(this.handleError)
     );
   }

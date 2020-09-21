@@ -8,10 +8,10 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="customerSelect" class="control-label col-md-2">Customer</label>
+            <label for="customerId" class="control-label col-md-2">Customer (required)</label>
             <div class="col-md-5">
-                <select id="customerSelect" formControlName="customerSelect">
-                <option *ngFor="let customer of customers" [value]="customer.id">
+                <select id="customerId" formControlName="customerId">
+                <option *ngFor="let customer of customers" [ngValue]="customer.id">
                     {{ customer.name }}
                 </option>
                 </select>
@@ -23,6 +23,10 @@
                 <input id="description" type="text" formControlName="description"/>
             </div>
         </div>
-        <button class="btn btn-info" type="submit" [disabled]="!addProjectForm.valid">Add</button>
+        <button class="btn btn-info" type="submit" [disabled]="!addProjectForm.valid">{{ addButtonText }}</button>
+        <div class="col-md-2">
+            <em id="errorMessage" style="color: red; font-weight: bold;" *ngIf="showError">There was an error adding the project. Please try again.</em>
+            <em id="successMessage" style="color:olivedrab; font-weight: bold;" *ngIf="showSuccess">Project added.</em>
+        </div>
     </form>
 </div>
