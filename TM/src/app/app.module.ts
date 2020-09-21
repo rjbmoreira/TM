@@ -11,6 +11,7 @@ import { SectionAddCustomerComponent } from './sections/section-add-customer/sec
 import { SectionAddProjectComponent } from './sections/section-add-project/section-add-project.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DBAccessService } from './services/dbaccess.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DBAccessService } from './services/dbaccess.service';
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     DBAccessService

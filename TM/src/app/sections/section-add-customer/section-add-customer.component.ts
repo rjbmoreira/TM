@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Customer } from 'src/app/models/customer';
+import { DBAccessService } from 'src/app/services/dbaccess.service';
 
 @Component({
   selector: 'app-section-add-customer',
@@ -9,9 +9,12 @@ import { Customer } from 'src/app/models/customer';
 })
 export class SectionAddCustomerComponent implements OnInit {
 
+  addButtonText: string = "Add";
+  showError:boolean = false;
+  showSuccess:boolean = false;
   addCustomerForm: FormGroup;
 
-  constructor(
+  constructor(private dbaccess: DBAccessService,
     private formBuilder: FormBuilder
   ) {
     
@@ -25,10 +28,29 @@ export class SectionAddCustomerComponent implements OnInit {
     })
   }
 
+  addCostumer(addCustomerFormValue): void {
+    
+    this.dbaccess.addCustomer(addCustomerFormValue)
+      .subscribe(res => {
+        console.log('Result from addCostumer: ', res);
+        this.showError = false;
+        this.showSuccess = true;
+        this.addCustomerForm.reset();
+        this.addButtonText = "Add";
+      }, (error) => {
+        console.log("There was an error.");
+        this.showSuccess = false;
+        this.showError = true;
+        this.addButtonText = "Add";
+      });
+      
+  }
+
   onSubmit(addCustomerFormValue){
-
-    console.warn('Your form has been submitted', addCustomerFormValue);
-    this.addCustomerForm.reset();
-
+    this.showError = this.showSuccess = false;
+    this.addButtonText = "Processing";
+    this.addCostumer(addCustomerFormValue);
+    //console.warn('Your form has been submitted', addCustomerFormValue);
+    
   }
 }

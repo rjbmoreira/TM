@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Customer } from 'src/app/models/customer';
+import { DBAccessService } from 'src/app/services/dbaccess.service';
 
 @Component({
   selector: 'app-section-add-project',
@@ -10,22 +11,21 @@ import { Customer } from 'src/app/models/customer';
 export class SectionAddProjectComponent implements OnInit {
 
   
-  constructor(
+  constructor(private dbaccess: DBAccessService,
     private formBuilder: FormBuilder
     ) { }
 
     addProjectForm: FormGroup;
     customers: Customer[] = [
-      { id:10, name: "customer 1", email: "c1@example.com", phone: "+351911111111" }
+      //{ id:10, name: "customer 1", email: "c1@example.com", phone: "+351911111111" }
     ];
     
     getCustomers(): void {
-      /*this._salesData.getCustomers()
-        .subscribe(result => {
-          console.log('Result from getCustomers: ', result);
-          //this.orders = res['page']['data'];
-          
-        });*/
+      this.dbaccess.getCustomers()
+        .subscribe(res => {
+          console.log('Result from getCustomers: ', res);
+          this.customers = res as Customer[];          
+        });
     }
 
   ngOnInit(): void {
