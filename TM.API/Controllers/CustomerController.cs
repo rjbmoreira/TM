@@ -44,6 +44,19 @@ namespace TM.API.Controllers
             if(customer == null){
                 return BadRequest();
             }
+
+            //TODO have Id be auto-incremented in db to avoid duplicate PK errors
+            //custom auto-increment code just for development purposes
+            if(_context.Customers.Count() == 0){
+                customer.Id = 1;
+            }
+            else {
+                var c = _context.Customers.OrderByDescending(c => c.Id).First();
+                customer.Id = c.Id+1;
+            }
+            //end of custom auto-increment code
+
+
             _context.Customers.Add(customer);
             _context.SaveChanges();
 

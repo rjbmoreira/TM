@@ -1,0 +1,28 @@
+<div class="section-container">
+    <h2>Add project</h2>
+    <form [formGroup]="addProjectForm" (ngSubmit)="onSubmit(addProjectForm.value)">
+        <div class="form-group row">
+            <label for="name" class="control-label col-md-2">Name (required)</label>
+            <div class="col-md-5">
+                <input id="name" type="text" formControlName="name" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="customerSelect" class="control-label col-md-2">Customer</label>
+            <div class="col-md-5">
+                <select id="customerSelect" formControlName="customerSelect">
+                <option *ngFor="let customer of customers" [value]="customer.id">
+                    {{ customer.name }}
+                </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="description" class="control-label col-md-2">Description</label>
+            <div class="col-md-5">
+                <input id="description" type="text" formControlName="description"/>
+            </div>
+        </div>
+        <button class="btn btn-info" type="submit" [disabled]="!addProjectForm.valid">Add</button>
+    </form>
+</div>

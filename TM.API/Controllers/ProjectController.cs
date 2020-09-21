@@ -21,7 +21,7 @@ namespace TM.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var data = _context.Projects.OrderBy(c => c.Id);
+            var data = _context.Projects.OrderBy(p => p.Id);
 
             return Ok(data);
         }
@@ -44,6 +44,18 @@ namespace TM.API.Controllers
             if(project == null){
                 return BadRequest();
             }
+
+            //TODO have Id be auto-incremented in db to avoid duplicate PK errors
+            //custom auto-increment code just for development purposes
+            if(_context.Projects.Count() == 0){
+                project.Id = 1;
+            }
+            else {
+                var p = _context.Projects.OrderByDescending(p => p.Id).First();
+                project.Id = p.Id+1;
+            }
+            //end of custom auto-increment code
+
             _context.Projects.Add(project);
             _context.SaveChanges();
 

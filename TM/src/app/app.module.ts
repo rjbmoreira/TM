@@ -7,19 +7,28 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SectionRegisterComponent } from './sections/section-register/section-register.component';
 import { SectionOverviewComponent } from './sections/section-overview/section-overview.component';
 import { appRoutes } from 'src/routes';
+import { SectionAddCustomerComponent } from './sections/section-add-customer/section-add-customer.component';
+import { SectionAddProjectComponent } from './sections/section-add-project/section-add-project.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DBAccessService } from './services/dbaccess.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     SectionRegisterComponent,
-    SectionOverviewComponent
+    SectionOverviewComponent,
+    SectionAddCustomerComponent,
+    SectionAddProjectComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    DBAccessService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
