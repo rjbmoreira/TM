@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TM.API.Data;
 using TM.API.Models;
 
@@ -58,7 +59,13 @@ namespace TM.API.Controllers
 
 
             _context.Customers.Add(customer);
-            _context.SaveChanges();
+
+
+            try{
+                _context.SaveChanges();
+            }catch(DbUpdateException ex){
+                return BadRequest("{ \"status\": \"error\", \"message\": \""+ex.Message + "\"}"); //TODO improve this handling
+            }
 
             return CreatedAtRoute("GetCustomer", new {id = customer.Id}, customer);
         }

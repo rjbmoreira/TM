@@ -1,10 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TM.API.Models
 {
     public class TimeInput{
 
         public int Id {get;set;}
-        public Customer Customer {get;set;}
+
+        [Required]
+        public int ProjectId {get;set;}
         public Project Project {get;set;}
+        
+        [Required]
         public int TimeSpent {get;set;}
     }
 }

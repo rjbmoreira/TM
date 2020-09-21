@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TM.API.Data;
 using TM.API.Models;
 
@@ -57,7 +58,12 @@ namespace TM.API.Controllers
             //end of custom auto-increment code
 
             _context.TimeInputs.Add(timeInput);
-            _context.SaveChanges();
+            
+            try{
+                _context.SaveChanges();
+            }catch(DbUpdateException ex){
+                return BadRequest("{ \"status\": \"error\", \"message\": \""+ex.Message + "\"}"); //TODO improve this handling
+            }
 
             return CreatedAtRoute("GetTimeInput", new {id = timeInput.Id}, timeInput);
         }

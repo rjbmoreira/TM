@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TM.API.Data;
 using TM.API.Models;
 
@@ -54,10 +55,16 @@ namespace TM.API.Controllers
                 var p = _context.Projects.OrderByDescending(p => p.Id).First();
                 project.Id = p.Id+1;
             }
-            //end of custom auto-increment code
+            //end of custom auto-increment code            
 
             _context.Projects.Add(project);
-            _context.SaveChanges();
+
+            try{
+                _context.SaveChanges();
+            }catch(DbUpdateException ex){
+                return BadRequest("{ \"status\": \"error\", \"message\": \""+ex.Message + "\"}"); //TODO improve this handling
+            }
+
 
             return CreatedAtRoute("GetProject", new {id = project.Id}, project);
         }
