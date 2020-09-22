@@ -35,7 +35,7 @@ export class SectionAddProjectComponent implements OnInit {
 
     this.addProjectForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      customerId: [-1, [Validators.required]],
+      customerId: ['', [Validators.required]],
       description: ''
     })
 

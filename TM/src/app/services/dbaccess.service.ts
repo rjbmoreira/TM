@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Customer } from '../models/customer';
 import { Project } from '../models/project';
+import { TimeInput } from '../models/timeinput';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +31,29 @@ export class DBAccessService {
     );
   }
 
+  getProjectsByCustomer(cId: number){
+    return this.http.get("https://localhost:5001/tm.api/project/bycustomer/"+cId).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   addProject(project: Project){
     return this.http.post("https://localhost:5001/tm.api/project",project).pipe(
       catchError(this.handleError)
     );
   }
 
+  registerTime(timeInput: TimeInput){
+    return this.http.post("https://localhost:5001/tm.api/timeinput",timeInput).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getTimeInputs(){
+    return this.http.get("https://localhost:5001/tm.api/timeinput").pipe(
+      catchError(this.handleError)
+    );
+  }
 
   /*
   From documentation. 
