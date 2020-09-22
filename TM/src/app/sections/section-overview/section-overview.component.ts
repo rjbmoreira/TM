@@ -20,21 +20,22 @@ export class SectionOverviewComponent implements OnInit {
     this.dbaccess.getTimeInputsGroupedByProject()
       .subscribe(res => {
         console.log(res);  
-        
-        let overview : ProjectOverview[] = res as ProjectOverview[];
-        for(var proj of overview){
-          for(var ti of proj.timeInputs){
-            this.overviewEntries.push(
-              {timeInput: ti,
-                 totalTime: proj.totalTime}
-                 );
-          }
-        }
-
-        console.log(this.overviewEntries);
-      });
+        this.overviewEntries = res as OverviewEntry[];
+        });
   }
 
+  toggleShow(projectId : number){
+    var divElm = document.getElementById("details-"+projectId);
+    var btnElm = document.getElementById("detailsbtn-"+projectId);
+    if(divElm.style.display == "none"){
+      divElm.style.display = "block";
+      btnElm.innerHTML = "Hide";
+    } else {
+      divElm.style.display = "none";
+      btnElm.innerHTML = "Show";
+    }
+    
+  }
  
 
   ngOnInit(): void {

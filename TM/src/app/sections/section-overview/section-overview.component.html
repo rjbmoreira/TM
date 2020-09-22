@@ -5,16 +5,22 @@
             <tr>
                 <th>Customer</th>
                 <th>Project</th>
-                <th>Time registered</th>
-                <th>Total time</th>
+                <th>Total time (hours)</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let entry of overviewEntries">
-                <td>{{ entry.timeInput.customerName }}</td>
-                <td>{{ entry.timeInput.projectName }}</td>
-                <td>{{ entry.timeInput.timeSpent }}</td>
+                <td>{{ entry.customerName }}</td>
+                <td>{{ entry.projectName }}</td>
                 <td>{{ entry.totalTime }}</td>
+                <td><button id="{{ 'detailsbtn-' + entry.projectId }}" class="btn btn-info" (click)="toggleShow(entry.projectId)">Show</button>
+                <div id="{{ 'details-' + entry.projectId }}" style="display:none" class="row">
+                    <h6>Registration list</h6>
+                    <ul *ngFor="let timeEntry of entry.timeInputs">
+                        <li>{{ timeEntry }} hours</li>
+                    </ul>
+                </div></td>
             </tr>
         </tbody>
     </table>

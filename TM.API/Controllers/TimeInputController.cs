@@ -17,40 +17,71 @@ namespace TM.API.Controllers
             _context = context;
         }
 
-        //get all time registrations, list ordered
+        //get single registration
         // tm.api/timeinput
         [HttpGet]
         public IActionResult Get()
         {
-            //var data = _context.TimeInputs.OrderBy(t => t.Id);
-            var data = _context.TimeInputs.Join(
-                _context.Projects,
-                timeinput => timeinput.ProjectId,
-                project => project.Id,
-                (timeinput, project) => new {
-                    Id = timeinput.Id,
-                    ProjectId = project.Id,
-                    ProjectName = project.Name,
-                    CustomerId = project.CustomerId,
-                    TimeSpent = timeinput.TimeSpent
-                }
-
-            ).Join(
-                _context.Customers,
-                timeinput => timeinput.CustomerId,
-                customer => customer.Id,
-                ( timeinput, customer) => new {
-                    Id = timeinput.Id,
-                    ProjectId = timeinput.ProjectId,
-                    ProjectName = timeinput.ProjectName,
-                    TimeSpent = timeinput.TimeSpent,
-                    CustomerId = timeinput.Id,
-                    CustomerName = customer.Name
-                }
-
-            ).OrderBy(t => t.Id);
-
+            var data = _context.TimeInputs.OrderBy(t => t.Id);
+            
             return Ok(data);
+        }
+
+        //get all time registrations by project with all info
+        //TODO lacks refinement
+        //TODO improve performance/memory usage by asking smaller chunks of results (n results)
+        // tm.api/timeinput/grouped
+        [HttpGet("groupedByProject")]
+        public IActionResult GroupedByProject()
+        {
+            var data = _context.Customers
+                    .SelectMany(
+                        c => _context.Projects.Where(
+                            p => p.CustomerId == c.Id
+                        )
+                        .Select(
+                            p => new
+                            {
+                                CustomerId = c.Id,
+                                CustomerName = c.Name,
+                                ProjectId = p.Id,
+                                ProjectName = p.Name
+                            }
+                        ))
+                        .SelectMany(
+                            p => _context.TimeInputs.Where(
+                                ti => ti.ProjectId == p.ProjectId
+                            )
+                            .Select(
+                                ti => new
+                                {
+                                    CustomerId = p.CustomerId,
+                                    CustomerName = p.CustomerName,
+                                    ProjectId = p.ProjectId,
+                                    ProjectName = p.ProjectName,
+                                    TimeSpent = ti.TimeSpent
+                                }
+                            )
+                        )                          
+                        .ToList();
+
+            var groupeddata = data
+                        .GroupBy(
+                            grp => new{ grp.ProjectId, grp.CustomerId }
+                        )
+                        .ToList()                        
+                        .Select(
+                            gr => new
+                            {
+                                ProjectId = gr.Key.ProjectId,
+                                CustomerId = gr.Key.CustomerId,
+                                CustomerName = gr.Select(x => x.CustomerName).FirstOrDefault(),
+                                ProjectName = gr.Select(x => x.ProjectName).FirstOrDefault(),
+                                TimeInputs = gr.ToList().Select(x => x.TimeSpent).ToList(),
+                                TotalTime = gr.Sum(x => x.TimeSpent)
+                            }
+                        ).ToList();
+            return Ok(groupeddata); 
         }
 
         //get single registration

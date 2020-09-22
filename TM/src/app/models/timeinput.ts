@@ -5,7 +5,4 @@ export interface TimeInput {
     id: number;
     projectId: number;
     timeSpent: number;
-    customerId: number,
-    customerName: string,
-    projectName: string,
 }

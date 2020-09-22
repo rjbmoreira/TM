@@ -81,7 +81,6 @@ export class SectionRegisterComponent implements OnInit {
     this.showError = this.showSuccess = false;
     this.registerButtonText = "Processing";
     this.registerTime(registerTimeFormValue);
-    //console.warn('Your form has been submitted', registerTimeFormValue);
     
   }
 

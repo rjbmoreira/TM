@@ -40,6 +40,7 @@ namespace TM.API.Controllers
         }
 
         //get project list by customer
+        // tm.api/project/bycustomer/{cId}
         [HttpGet("bycustomer/{cId}")]
         public IActionResult ByCustomer(int cId)
         {
