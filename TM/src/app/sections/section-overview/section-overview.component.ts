@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectOverview } from 'src/app/models/projectOverview';
 import { DBAccessService } from 'src/app/services/dbaccess.service';
-import { TimeInput } from '../../models/timeinput';
+import { OverviewEntry } from '../../models/overviewEntry';
 
 @Component({
   selector: 'app-section-overview',
@@ -9,21 +10,36 @@ import { TimeInput } from '../../models/timeinput';
 })
 export class SectionOverviewComponent implements OnInit {
   
-  timeInputs: TimeInput[] = [
+  overviewEntries: OverviewEntry [] = [
       ];
+
 
   constructor(private dbaccess: DBAccessService) { }
 
-  getTimeInputs(): void {
-    this.dbaccess.getTimeInputs()
+  getTimeInputsGroupedByProject(): void {
+    this.dbaccess.getTimeInputsGroupedByProject()
       .subscribe(res => {
-        console.log('Result from getTimeInputs: ', res);
-        this.timeInputs = res as TimeInput[];   
+        console.log(res);  
+        
+        let overview : ProjectOverview[] = res as ProjectOverview[];
+        for(var proj of overview){
+          for(var ti of proj.timeInputs){
+            this.overviewEntries.push(
+              {timeInput: ti,
+                 totalTime: proj.totalTime}
+                 );
+          }
+        }
+
+        console.log(this.overviewEntries);
       });
   }
 
+ 
+
   ngOnInit(): void {
-    this.getTimeInputs();
+    this.getTimeInputsGroupedByProject();
   }
+
 
 }

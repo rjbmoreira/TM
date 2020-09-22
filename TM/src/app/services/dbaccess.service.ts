@@ -49,8 +49,8 @@ export class DBAccessService {
     );
   }
 
-  getTimeInputs(){
-    return this.http.get("https://localhost:5001/tm.api/timeinput").pipe(
+  getTimeInputsGroupedByProject(){
+    return this.http.get("https://localhost:5001/tm.api/timeinput/groupedbyproject").pipe(
       catchError(this.handleError)
     );
   }

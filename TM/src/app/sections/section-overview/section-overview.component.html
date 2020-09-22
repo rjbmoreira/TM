@@ -1,20 +1,20 @@
 <div class="section-container">
-    <h2>Overview</h2>
+    <h2>Overview of all time registration entries</h2>
     <table class="table table-inverse table-hover">
         <thead class="thead-light">
             <tr>
                 <th>Customer</th>
                 <th>Project</th>
-                <th>Time spent</th>
-                <th>Details</th>
+                <th>Time registered</th>
+                <th>Total time</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let timeInput of timeInputs">
-                <td>{{ timeInput.customerName }}</td>
-                <td>{{ timeInput.projectName }}</td>
-                <td>{{ timeInput.timeSpent }}</td>
-                <td>click to open</td>
+            <tr *ngFor="let entry of overviewEntries">
+                <td>{{ entry.timeInput.customerName }}</td>
+                <td>{{ entry.timeInput.projectName }}</td>
+                <td>{{ entry.timeInput.timeSpent }}</td>
+                <td>{{ entry.totalTime }}</td>
             </tr>
         </tbody>
     </table>
