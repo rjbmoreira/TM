@@ -39,6 +39,15 @@ namespace TM.API.Controllers
             return Ok(project);
         }
 
+        //get project list by customer
+        [HttpGet("bycustomer/{cId}")]
+        public IActionResult ByCustomer(int cId)
+        {
+            var projects = _context.Projects.Where(c => c.CustomerId == cId).OrderBy(p => p.Id);
+
+            return Ok(projects);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] Project project)
         {

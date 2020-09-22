@@ -20,9 +20,20 @@ namespace TM.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt =>
+                {
+                    opt.AddPolicy("CorsPolicy",
+                        b => b.AllowAnyOrigin()
+                              .AllowAnyMethod()
+                              .AllowAnyHeader());
+                }
+            );
+
             services.AddDbContext<DataAccessContext>(p => p.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +43,8 @@ namespace TM.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 

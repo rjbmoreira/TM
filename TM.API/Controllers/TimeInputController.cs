@@ -22,7 +22,33 @@ namespace TM.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var data = _context.TimeInputs.OrderBy(t => t.Id);
+            //var data = _context.TimeInputs.OrderBy(t => t.Id);
+            var data = _context.TimeInputs.Join(
+                _context.Projects,
+                timeinput => timeinput.ProjectId,
+                project => project.Id,
+                (timeinput, project) => new {
+                    Id = timeinput.Id,
+                    ProjectId = project.Id,
+                    ProjectName = project.Name,
+                    CustomerId = project.CustomerId,
+                    TimeSpent = timeinput.TimeSpent
+                }
+
+            ).Join(
+                _context.Customers,
+                timeinput => timeinput.CustomerId,
+                customer => customer.Id,
+                ( timeinput, customer) => new {
+                    Id = timeinput.Id,
+                    ProjectId = timeinput.ProjectId,
+                    ProjectName = timeinput.ProjectName,
+                    TimeSpent = timeinput.TimeSpent,
+                    CustomerId = timeinput.Id,
+                    CustomerName = customer.Name
+                }
+
+            ).OrderBy(t => t.Id);
 
             return Ok(data);
         }

@@ -11,6 +11,6 @@ namespace TM.API.Models
         public Project Project {get;set;}
         
         [Required]
-        public int TimeSpent {get;set;}
+        public decimal TimeSpent {get;set;}
     }
 }
